@@ -8,12 +8,11 @@ onready var file_ : String = (LEVELS_PATH + file_name)
 var save_var : Array = []
 
 func _ready() -> void:
-	save_cells()
-#	load_cells()
+#	save_cells()
+	load_cells()
 
 func save_cells() -> void:
 	save_var = level_map.read_cells()
-	var dic : = {"Pattern 0": save_var}
 	var save_file = File.new()
 	var err : int = save_file.open(file_, File.READ_WRITE)
 	if err:
@@ -21,7 +20,7 @@ func save_cells() -> void:
 		return
 	print("File opened: ", file_)
 	save_file.seek_end()
-	save_file.store_line(to_json(dic))
+	save_file.store_line(to_json(save_var))
 	save_file.close()
 	save_var = []
 	print("Finished Saving")
@@ -33,5 +32,6 @@ func load_cells() -> void:
 		print("Failed opening File: ", file_, ", Error code: ", err)
 		return
 	print("File opened: ", file_)
-	
-	pass
+	var varying = parse_json(save_file.get_line())
+	save_file.close()
+	level_map.write_cells(varying)
