@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/util/trail.gd" type="Script" id=1]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Trail" type="Line2D"]
+width = 6.0
+width_curve = SubResource( 1 )
+joint_mode = 1
+end_cap_mode = 2
+antialiased = true
+script = ExtResource( 1 )
