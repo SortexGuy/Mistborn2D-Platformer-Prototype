@@ -17,7 +17,7 @@ func _transitions(_delta : float) -> void:
 	elif not player.is_grounded and player.vel.y > .0:
 		player.early_fall = false
 		state_machine.transition_to("Fall")
-	elif player.is_grounded and player.input_his.current[0].x != .0:
+	elif player.is_grounded and player.input_his.current[1].x != .0:
 		state_machine.transition_to("Move")
 	elif Input.is_action_just_pressed("dig"):
 		state_machine.transition_to("Dig")

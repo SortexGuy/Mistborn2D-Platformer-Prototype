@@ -20,10 +20,10 @@ func _transitions(_delta : float) -> void:
 		frames_in = 0
 		state_machine.transition_to("Fall")
 	elif player.is_grounded and frames_in >= 4:
-		if player.input_his.current[0].x == .0:
+		if player.input_his.current[1].x == .0:
 			frames_in = 0
 			state_machine.transition_to("Idle")
-		elif player.input_his.current[0].x != .0:
+		elif player.input_his.current[1].x != .0:
 			frames_in = 0
 			state_machine.transition_to("Move")
 	elif Input.is_action_just_pressed("dig"):

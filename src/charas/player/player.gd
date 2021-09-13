@@ -10,7 +10,7 @@ onready var dig_gizmo : MeshInstance2D = $DigGizmo
 onready var foot_rays : Node2D = $FootRays
 onready var dig_ray : RayCast2D = $DigRay
 onready var label : Label = $UI/Label
-onready var input_his : InputHistory = InputHistory.new()
+onready var input_his := InputHistory.new()
 
 export(float, 1.0, 10.0) var move_speed : float = 8.0
 export(float, .0, 1.0) var move_accel : float = .3
@@ -42,6 +42,7 @@ func _physics_process(delta: float) -> void:
 	input_his.update()
 	is_grounded = _check_grounded()
 	dig_ray.look_at(get_global_mouse_position())
+	# Dig Ray Gizmo
 	if dig_ray.is_colliding():
 		if not dig_gizmo.visible: dig_gizmo.visible = true 
 		dig_gizmo.global_position = dig_ray.get_collision_point()
@@ -69,9 +70,9 @@ func idle() -> void:
 	vel.x = lerp(vel.x, .0, move_accel)
 
 func move() -> void:
-	cam.offset_h = input_his.current[0].x * .25
-	vel.x = lerp(vel.x, input_his.current[0].x * move_speed, move_accel)
-	if input_his.current[0].x != .0: body.scale.x = input_his.current[0].x 
+	cam.offset_h = input_his.current[1].x * .25
+	vel.x = lerp(vel.x, input_his.current[1].x * move_speed, move_accel)
+	if input_his.current[1].x != .0: body.scale.x = input_his.current[1].x 
 
 func apply_gravity(_delta : float) -> void:
 	vel.y += gravity * _delta
@@ -89,11 +90,11 @@ func update_movement() -> void:
 
 func check_jump() -> bool:
 	if ((is_grounded or frames_in_air < coyote_frames) and 
-		input_his.current[1] and input_his.current[2] <= 7): return true
+		input_his.current[2] and input_his.current[0] <= 7): return true
 	return false
 
 func check_fall() -> bool:
-	if not input_his.current[1] and vel.y < min_jump_force: return true
+	if not input_his.current[2] and vel.y < min_jump_force: return true
 	return false
 
 func _check_grounded() -> bool:
@@ -101,23 +102,3 @@ func _check_grounded() -> bool:
 		if ray.is_colliding():
 			return true
 	return false
-
-# Historial para el input
-class InputHistory:
-	var current : Array = [0, Vector2.ZERO, false, METALS.STEEL]
-	var his_frames : int = 0
-	
-	func update() -> void:
-		var dir : Vector2 = Vector2(
-			(-int(Input.is_action_pressed("move_left")) + 
-			int(Input.is_action_pressed("move_right"))), .0)
-		var jump : bool = Input.is_action_pressed("jump")
-		var metal : int = (-int(Input.is_action_just_pressed("metal_up")) + 
-		int(Input.is_action_just_pressed("metal_down")))
-		
-		if (dir != current[1]) or (jump != current[2]) or (metal != current[3]):
-			current.clear()
-			his_frames = 0
-		
-		his_frames += 1
-		current = [his_frames, dir, jump, metal]

@@ -16,7 +16,7 @@ func _transitions(_delta : float) -> void:
 	if player.check_jump():
 		state_machine.transition_to("Jump")
 	elif player.is_grounded:
-		if player.input_his.current[0].x == .0:
+		if player.input_his.current[1].x == .0:
 			state_machine.transition_to("Idle")
-		elif player.input_his.current[0].x != .0:
+		elif player.input_his.current[1].x != .0:
 			state_machine.transition_to("Move")
