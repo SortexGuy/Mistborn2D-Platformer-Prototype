@@ -38,12 +38,5 @@ func write_cells(_cells : Array) -> void:
 			else:
 				curr_tile = _cells[y][x] as int
 				set_cell(x, y, curr_tile, false, false, false, Vector2(1,0))
-
-func _on_start() -> void:
-	for y in range(0, 6):
-		if y < 3:
-			for x in range(0, 16):
-				set_cell(x, y, 0, false, false, false, Vector2(1,0))
-		else:
-			for x in range(0, 20):
-				set_cell(x-2, y, 0, false, false, false, Vector2(1,0))
+#			yield(get_tree().create_timer(0.01666/2), "timeout")
+#		yield(get_tree().create_timer(0.01666), "timeout")

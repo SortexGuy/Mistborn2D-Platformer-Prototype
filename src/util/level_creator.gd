@@ -14,7 +14,7 @@ func _ready() -> void:
 func save_cells() -> void:
 	save_var = level_map.read_cells()
 	var save_file = File.new()
-	var err : int = save_file.open(file_, File.READ_WRITE)
+	var err : int = save_file.open(file_, File.WRITE)
 	if err:
 		print("Failed opening File: ", file_, ", Error code: ", err)
 		return
