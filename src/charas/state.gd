@@ -1,7 +1,7 @@
 extends Node
 class_name State
 
-var state_machine : StateMachine
+var state_machine : NStateMachine
 
 func handle_input(_event : InputEvent) -> void:
 	pass

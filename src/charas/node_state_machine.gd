@@ -1,5 +1,5 @@
 extends Node
-class_name StateMachine
+class_name NStateMachine
 
 signal transitioned(state_name)
 

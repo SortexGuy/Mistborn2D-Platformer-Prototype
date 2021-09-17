@@ -1,8 +1,6 @@
 extends KinematicBody2D
 class_name Player
 
-enum METALS{STEEL, IRON}
-
 onready var cam : Camera2D = $Camera2D
 onready var body : Node2D = $Body
 onready var sprite : AnimatedSprite = $Body/AnimSprite
@@ -24,7 +22,6 @@ var snap : Vector2 = Vector2.DOWN
 var vel : Vector2
 var early_fall : bool = false
 var is_grounded : bool
-var current_metal : int
 var frames_in_air : int = 0
 var gravity : float
 var max_jump_force : float

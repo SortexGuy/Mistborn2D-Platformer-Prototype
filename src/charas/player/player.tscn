@@ -1,16 +1,15 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://src/charas/player/player.gd" type="Script" id=1]
 [ext_resource path="res://src/charas/player/p_states/idle_state.gd" type="Script" id=2]
 [ext_resource path="res://src/util/trail.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/images/protos/characters.png" type="Texture" id=4]
-[ext_resource path="res://src/charas/state_machine.gd" type="Script" id=5]
+[ext_resource path="res://src/charas/node_state_machine.gd" type="Script" id=5]
 [ext_resource path="res://src/charas/player/p_states/move_state.gd" type="Script" id=6]
 [ext_resource path="res://src/charas/player/p_states/jump_state.gd" type="Script" id=7]
 [ext_resource path="res://src/charas/player/p_states/fall_state.gd" type="Script" id=8]
 [ext_resource path="res://src/charas/player/p_states/dig_state.gd" type="Script" id=9]
-[ext_resource path="res://src/charas/player/ap_states/steel_state.gd" type="Script" id=10]
-[ext_resource path="res://src/charas/player/ap_states/iron_state.gd" type="Script" id=11]
+[ext_resource path="res://src/charas/player/ap_states/allomantic_sm.gd" type="Script" id=10]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.791367, 1 )
@@ -38,47 +37,47 @@ region = Rect2( 0, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 4 )
-region = Rect2( 352, 32, 32, 32 )
+region = Rect2( 256, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 4 )
-region = Rect2( 416, 32, 32, 32 )
+region = Rect2( 288, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 4 )
-region = Rect2( 320, 32, 32, 32 )
+region = Rect2( 128, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 4 )
-region = Rect2( 352, 32, 32, 32 )
+region = Rect2( 160, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 4 )
-region = Rect2( 384, 32, 32, 32 )
+region = Rect2( 192, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 4 )
-region = Rect2( 192, 32, 32, 32 )
+region = Rect2( 224, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 4 )
-region = Rect2( 224, 32, 32, 32 )
+region = Rect2( 320, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 4 )
-region = Rect2( 128, 32, 32, 32 )
+region = Rect2( 352, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 4 )
-region = Rect2( 160, 32, 32, 32 )
+region = Rect2( 384, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 4 )
-region = Rect2( 256, 32, 32, 32 )
+region = Rect2( 352, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 4 )
-region = Rect2( 288, 32, 32, 32 )
+region = Rect2( 416, 32, 32, 32 )
 
 [sub_resource type="SpriteFrames" id=18]
 animations = [ {
@@ -92,30 +91,30 @@ animations = [ {
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 7 ), SubResource( 7 ), SubResource( 8 ), SubResource( 8 ), SubResource( 7 ) ],
+"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 7 ) ],
 "loop": false,
-"name": "Punch",
-"speed": 8.0
+"name": "Hurt",
+"speed": 6.0
 }, {
-"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
-"loop": false,
-"name": "Slash",
-"speed": 10.0
-}, {
-"frames": [ SubResource( 12 ), SubResource( 13 ) ],
-"loop": false,
-"name": "Fall",
-"speed": 10.0
-}, {
-"frames": [ SubResource( 14 ), SubResource( 15 ) ],
+"frames": [ SubResource( 9 ), SubResource( 10 ) ],
 "loop": false,
 "name": "Jump",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 16 ), SubResource( 17 ), SubResource( 16 ) ],
+"frames": [ SubResource( 11 ), SubResource( 12 ) ],
 "loop": false,
-"name": "Hurt",
-"speed": 6.0
+"name": "Fall",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ],
+"loop": false,
+"name": "Slash",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 16 ), SubResource( 16 ), SubResource( 17 ), SubResource( 17 ), SubResource( 16 ) ],
+"loop": false,
+"name": "Punch",
+"speed": 8.0
 } ]
 
 [sub_resource type="VisualShaderNodeColorUniform" id=19]
@@ -250,14 +249,7 @@ script = ExtResource( 8 )
 script = ExtResource( 9 )
 
 [node name="AllomanticSM" type="Node" parent="."]
-script = ExtResource( 5 )
-initial_state = NodePath("Steel")
-
-[node name="Steel" type="Node" parent="AllomanticSM"]
 script = ExtResource( 10 )
-
-[node name="Iron" type="Node" parent="AllomanticSM"]
-script = ExtResource( 11 )
 
 [node name="UI" type="Control" parent="."]
 anchor_right = 1.0
@@ -276,3 +268,6 @@ margin_top = -7.0
 margin_right = 26.0
 margin_bottom = 7.0
 text = "Steel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
