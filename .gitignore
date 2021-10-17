@@ -2,3 +2,4 @@
 .import/
 *.md5
 *.stex
+src/tests/
