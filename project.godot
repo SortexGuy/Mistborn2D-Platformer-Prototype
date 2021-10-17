@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "DigTool",
+"language": "GDScript",
+"path": "res://src/charas/player/dig_tool.gd"
+}, {
 "base": "Resource",
 "class": "InputHistory",
 "language": "GDScript",
@@ -18,6 +23,11 @@ _global_script_classes=[ {
 "class": "LevelMap",
 "language": "GDScript",
 "path": "res://src/util/level_map.gd"
+}, {
+"base": "Node2D",
+"class": "MetalDetector",
+"language": "GDScript",
+"path": "res://src/charas/player/metal_detector.gd"
 }, {
 "base": "Node",
 "class": "NStateMachine",
@@ -45,8 +55,10 @@ _global_script_classes=[ {
 "path": "res://src/charas/state.gd"
 } ]
 _global_script_class_icons={
+"DigTool": "",
 "InputHistory": "",
 "LevelMap": "",
+"MetalDetector": "",
 "NStateMachine": "",
 "Player": "",
 "PlayerState": "",
@@ -73,8 +85,6 @@ gdscript/warnings/unused_argument=false
 
 window/size/width=960
 window/size/height=540
-window/size/test_width=480
-window/size/test_height=270
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 
@@ -132,6 +142,7 @@ burn_metal={
 2d_physics/layer_1="Background"
 2d_physics/layer_2="Foreground"
 2d_physics/layer_3="Player"
+2d_physics/layer_4="Metals"
 
 [physics]
 

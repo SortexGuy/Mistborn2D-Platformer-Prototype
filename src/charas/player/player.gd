@@ -4,9 +4,9 @@ class_name Player
 onready var cam : Camera2D = $Camera2D
 onready var body : Node2D = $Body
 onready var sprite : AnimatedSprite = $Body/AnimSprite
-onready var dig_gizmo : MeshInstance2D = $DigGizmo
 onready var foot_rays : Node2D = $FootRays
-onready var dig_ray : RayCast2D = $DigRay
+onready var dig_tool : DigTool = $DigTool
+onready var metal_detector : MetalDetector = $MetalDetector
 onready var label : Label = $UI/Label
 onready var input_his := InputHistory.new()
 
@@ -38,29 +38,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	input_his.update()
 	is_grounded = _check_grounded()
-	dig_ray.look_at(get_global_mouse_position())
-	# Dig Ray Gizmo
-	if dig_ray.is_colliding():
-		if not dig_gizmo.visible: dig_gizmo.visible = true 
-		dig_gizmo.global_position = dig_ray.get_collision_point()
-	else: dig_gizmo.visible = false
 	
 	if not is_grounded and frames_in_air <= coyote_frames:
 		frames_in_air += 1
 	elif is_grounded:
 		frames_in_air = 0
-
-func dig() -> void:
-	dig_ray.force_raycast_update()
-	if dig_ray.is_colliding():
-		if not dig_ray.get_collider() is LevelMap:
-			return
-		var coll : LevelMap = dig_ray.get_collider() as LevelMap
-		var coll_point : Vector2 = dig_ray.get_collision_point() + (
-			dig_ray.get_collision_point() - self .global_position).normalized()
-		var x : int = int(coll.world_to_map(coll_point).x)
-		var y : int = int(coll.world_to_map(coll_point).y)
-		coll.set_cell(x, y, -1)
 
 func idle() -> void:
 	cam.offset_h = .0

@@ -6,6 +6,6 @@
 [node name="Prueba" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 128, 72 )
+position = Vector2( 128, 128 )
 
 [node name="LevelCreator" parent="." instance=ExtResource( 2 )]

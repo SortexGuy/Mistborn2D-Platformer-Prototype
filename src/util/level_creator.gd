@@ -8,8 +8,8 @@ onready var file_ : String = (LEVELS_PATH + file_name)
 var save_var : Array = []
 
 func _ready() -> void:
-#	save_cells()
-	load_cells()
+	save_cells()
+#	load_cells()
 
 func save_cells() -> void:
 	save_var = level_map.read_cells()
@@ -22,7 +22,7 @@ func save_cells() -> void:
 	save_file.seek_end()
 	save_file.store_line(to_json(save_var))
 	save_file.close()
-	save_var = []
+	save_var.clear()
 	print("Finished Saving")
 
 func load_cells() -> void:

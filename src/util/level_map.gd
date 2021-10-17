@@ -11,11 +11,12 @@ func read_cells() -> Array:
 			var cell : int = get_cell(x, y)
 			var push_x
 			if cell == 0:
-				push_x = get_cell_autotile_coord(x,y)
+#				push_x = get_cell_autotile_coord(x,y)
+				push_x = cell
 			else: push_x = cell
 			x_cells.push_back(push_x)
 		cells.push_back(x_cells.duplicate(true))
-		print("Readed Y: ", y, ", Time passed: ")
+		print("Readed Y: ", y)
 	print("Finished reading")
 	return cells
 

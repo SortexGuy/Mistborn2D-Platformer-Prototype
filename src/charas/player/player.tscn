@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://src/charas/player/player.gd" type="Script" id=1]
 [ext_resource path="res://src/charas/player/p_states/idle_state.gd" type="Script" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://src/charas/player/p_states/fall_state.gd" type="Script" id=8]
 [ext_resource path="res://src/charas/player/p_states/dig_state.gd" type="Script" id=9]
 [ext_resource path="res://src/charas/player/ap_states/allomantic_sm.gd" type="Script" id=10]
+[ext_resource path="res://src/charas/player/dig_tool.res" type="PackedScene" id=11]
+[ext_resource path="res://src/charas/player/metal_detector.res" type="PackedScene" id=12]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.791367, 1 )
@@ -37,11 +39,11 @@ region = Rect2( 0, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 4 )
-region = Rect2( 256, 32, 32, 32 )
+region = Rect2( 352, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 4 )
-region = Rect2( 288, 32, 32, 32 )
+region = Rect2( 416, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 4 )
@@ -73,11 +75,11 @@ region = Rect2( 384, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 4 )
-region = Rect2( 352, 32, 32, 32 )
+region = Rect2( 256, 32, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 4 )
-region = Rect2( 416, 32, 32, 32 )
+region = Rect2( 288, 32, 32, 32 )
 
 [sub_resource type="SpriteFrames" id=18]
 animations = [ {
@@ -91,10 +93,10 @@ animations = [ {
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 7 ) ],
+"frames": [ SubResource( 7 ), SubResource( 7 ), SubResource( 8 ), SubResource( 8 ), SubResource( 7 ) ],
 "loop": false,
-"name": "Hurt",
-"speed": 6.0
+"name": "Punch",
+"speed": 8.0
 }, {
 "frames": [ SubResource( 9 ), SubResource( 10 ) ],
 "loop": false,
@@ -111,63 +113,13 @@ animations = [ {
 "name": "Slash",
 "speed": 10.0
 }, {
-"frames": [ SubResource( 16 ), SubResource( 16 ), SubResource( 17 ), SubResource( 17 ), SubResource( 16 ) ],
+"frames": [ SubResource( 16 ), SubResource( 17 ), SubResource( 16 ) ],
 "loop": false,
-"name": "Punch",
-"speed": 8.0
+"name": "Hurt",
+"speed": 6.0
 } ]
 
-[sub_resource type="VisualShaderNodeColorUniform" id=19]
-uniform_name = "ColorUniform"
-
-[sub_resource type="VisualShader" id=20]
-code = "shader_type canvas_item;
-render_mode unshaded;
-
-uniform vec4 ColorUniform : hint_color;
-
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// ColorUniform:2
-	vec3 n_out2p0 = ColorUniform.rgb;
-	float n_out2p1 = ColorUniform.a;
-
-// Output:0
-	COLOR.rgb = n_out2p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-graph_offset = Vector2( -33.75, 112.125 )
-mode = 1
-flags/light_only = false
-flags/unshaded = true
-nodes/fragment/2/node = SubResource( 19 )
-nodes/fragment/2/position = Vector2( 240, 140 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
-
-[sub_resource type="ShaderMaterial" id=21]
-render_priority = 5
-shader = SubResource( 20 )
-shader_param/ColorUniform = Color( 0.701961, 0.176471, 0.176471, 1 )
-
-[sub_resource type="SphereMesh" id=22]
-radius = 3.0
-height = 6.0
-radial_segments = 32
-rings = 16
-
-[sub_resource type="CapsuleShape2D" id=23]
+[sub_resource type="CapsuleShape2D" id=19]
 radius = 6.0
 height = 10.0
 
@@ -178,6 +130,8 @@ script = ExtResource( 1 )
 move_accel = 0.4
 min_jump_height = 1.0
 jump_duration = 0.4
+
+[node name="MetalDetector" parent="." instance=ExtResource( 12 )]
 
 [node name="Trail" parent="." instance=ExtResource( 3 )]
 default_color = Color( 1, 0.0862745, 0.0862745, 1 )
@@ -193,22 +147,10 @@ frame = 2
 playing = true
 offset = Vector2( -1, -5 )
 
-[node name="DigGizmo" type="MeshInstance2D" parent="."]
-material = SubResource( 21 )
-mesh = SubResource( 22 )
+[node name="DigTool" parent="." instance=ExtResource( 11 )]
 
 [node name="CollShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 23 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-zoom = Vector2( 0.5, 0.5 )
-process_mode = 0
-smoothing_enabled = true
-smoothing_speed = 7.0
-drag_margin_top = 0.1
-drag_margin_bottom = 0.1
-editor_draw_drag_margin = true
+shape = SubResource( 19 )
 
 [node name="FootRays" type="Node2D" parent="."]
 
@@ -224,10 +166,15 @@ enabled = true
 cast_to = Vector2( 0, 6 )
 collision_mask = 2
 
-[node name="DigRay" type="RayCast2D" parent="."]
-enabled = true
-cast_to = Vector2( 20, 0 )
-collision_mask = 2
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+process_mode = 0
+smoothing_enabled = true
+smoothing_speed = 7.0
+drag_margin_top = 0.1
+drag_margin_bottom = 0.1
+editor_draw_drag_margin = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 5 )
@@ -267,7 +214,6 @@ margin_left = -7.0
 margin_top = -7.0
 margin_right = 26.0
 margin_bottom = 7.0
-text = "Steel"
 __meta__ = {
 "_edit_use_anchors_": false
 }
