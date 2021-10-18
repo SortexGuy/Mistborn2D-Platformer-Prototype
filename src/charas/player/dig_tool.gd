@@ -15,11 +15,12 @@ func _physics_process(delta: float) -> void:
 func dig() -> void:
 	dig_ray.force_raycast_update()
 	if dig_ray.is_colliding():
-		if not dig_ray.get_collider() is LevelMap:
+		if not dig_ray.get_collider() is TileMap:
 			return
-		var coll : LevelMap = dig_ray.get_collider() as LevelMap
+		var coll : TileMap = dig_ray.get_collider() as TileMap
 		var coll_point : Vector2 = dig_ray.get_collision_point() + (
 			dig_ray.get_collision_point() - self .global_position).normalized()
 		var x : int = int(coll.world_to_map(coll_point).x)
 		var y : int = int(coll.world_to_map(coll_point).y)
 		coll.set_cell(x, y, -1)
+		coll.update_bitmask_region()

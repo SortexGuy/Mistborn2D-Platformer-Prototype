@@ -5,7 +5,8 @@ onready var parent := get_parent()# as Player
 onready var metal_area : Area2D = $MetalArea
 onready var coll_shape : Shape2D = $MetalArea/CollShape2D.get_shape()
 
-var burning : bool = true
+var burning : bool = false
+var heated : bool = false
 var frames : int = 0
 var metal_points : Array = []
 var tile_map : TileMap
@@ -43,7 +44,8 @@ func _check_m_closest_p() -> Vector2:
 func _draw() -> void:
 	for p in metal_points:
 		p = p as Vector2
-		draw_vector(p-self.global_position, Vector2.ZERO, Color.aqua)
+		draw_vector(p-self.global_position, Vector2.ZERO,
+			 Color.aqua if not heated else Color.blue)
 
 func _create_physics_shape(
 		_shape : Shape2D, 

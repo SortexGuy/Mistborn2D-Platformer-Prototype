@@ -7,11 +7,14 @@ onready var sprite : AnimatedSprite = $Body/AnimSprite
 onready var foot_rays : Node2D = $FootRays
 onready var dig_tool : DigTool = $DigTool
 onready var metal_detector : MetalDetector = $MetalDetector
+onready var all_sm : SStateMachine = $AllomanticSM
 onready var label : Label = $UI/Label
 onready var input_his := InputHistory.new()
 
-export(float, 1.0, 10.0) var move_speed : float = 8.0
-export(float, .0, 1.0) var move_accel : float = .3
+export(float, 1.0, 10.0) var move_speed : float = 12.0
+export(float, .0, 1.0) var move_accel : float = .2
+export(float, 32.0, 128.0) var pushing_speed : float = 48.0
+export(float, .0, 1.0) var friction : float = .5
 export(float, 1.0, 10.0) var max_jump_height : float = 3.0
 export(float, 1.0, 10.0) var min_jump_height : float = 1.1
 export(float, .1, 5.0) var jump_duration : float = .5
@@ -20,6 +23,7 @@ export(int, 1, 10) var coyote_frames : int = 6
 
 var snap : Vector2 = Vector2.DOWN
 var vel : Vector2
+var pushing : bool = false
 var early_fall : bool = false
 var is_grounded : bool
 var frames_in_air : int = 0
@@ -29,6 +33,7 @@ var min_jump_force : float
 
 func _ready() -> void:
 	move_speed *= Core.W_UNITS
+	pushing_speed *= Core.W_UNITS
 	max_jump_height *= Core.W_UNITS
 	min_jump_height *= Core.W_UNITS*.5
 	gravity = 2.0 * max_jump_height / pow(jump_duration, 2.0)
@@ -46,7 +51,7 @@ func _physics_process(delta: float) -> void:
 
 func idle() -> void:
 	cam.offset_h = .0
-	vel.x = lerp(vel.x, .0, move_accel)
+	vel.x = lerp(vel.x, .0, friction)
 
 func move() -> void:
 	cam.offset_h = input_his.current[1].x * .25
@@ -58,7 +63,7 @@ func apply_gravity(_delta : float) -> void:
 
 func jump() -> void:
 	snap = Vector2.ZERO
-	vel.y = max_jump_force
+	vel.y = max_jump_force if not pushing else vel.y + max_jump_force
 
 func fall() -> void:
 	snap = Vector2.DOWN
@@ -66,6 +71,13 @@ func fall() -> void:
 
 func update_movement() -> void:
 	vel = move_and_slide_with_snap(vel, snap, Vector2.UP)
+
+func push_point(p: Vector2, _delta: float, heat: bool) -> Vector2:
+	var _vel : Vector2 = (
+		(self.global_position - p).normalized() * 
+		(pushing_speed if not heat else pushing_speed * 2.0)
+	) * _delta
+	return _vel
 
 func check_jump() -> bool:
 	if ((is_grounded or frames_in_air < coyote_frames) and 

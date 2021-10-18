@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/charas/player/input_history.gd"
 }, {
-"base": "TileMap",
-"class": "LevelMap",
-"language": "GDScript",
-"path": "res://src/util/level_map.gd"
-}, {
 "base": "Node2D",
 "class": "MetalDetector",
 "language": "GDScript",
@@ -57,7 +52,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "DigTool": "",
 "InputHistory": "",
-"LevelMap": "",
 "MetalDetector": "",
 "NStateMachine": "",
 "Player": "",
